@@ -1,6 +1,6 @@
 services:
   gouni-platform-os:
-    image: gouni-platform-os:0.0.1
+    image: platform-0.0.1
     build:
       context: .
       dockerfile: Dockerfile
