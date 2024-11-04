@@ -1,23 +1,42 @@
-# Usar una imagen base con JDK 8 y Gradle
-FROM gradle:7.3.0-jdk11 AS build
+# Use a base image with both Maven and Gradle
+FROM adoptopenjdk:11-jdk-hotspot as build
 
-# Establecer un directorio de trabajo
+# Install Maven and Gradle
+RUN apt-get update && \
+    apt-get install -y maven gradle && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
 WORKDIR /app
 
-# Copiar archivos de tu proyecto al directorio de trabajo
-COPY . /app
+# Copy the project files
+COPY . .
 
-# Ejecutar Gradle para construir el proyecto
-RUN gradle clean build
+# Attempt to build with Maven first, if it fails, try Gradle
+RUN if [ -f "pom.xml" ]; then \
+        echo "Building with Maven" && \
+        mvn clean package -DskipTests; \
+    elif [ -f "build.gradle" ]; then \
+        echo "Building with Gradle" && \
+        gradle clean build --no-daemon; \
+    else \
+        echo "No pom.xml or build.gradle found" && \
+        exit 1; \
+    fi
 
-# Crear una nueva imagen basada en OpenJDK 8
-FROM openjdk:11-jre-slim-buster
+# Use a slim JRE image for the final stage
+FROM adoptopenjdk:11-jre-hotspot
 
-# Exponer el puerto que utilizará la aplicación
+WORKDIR /app
+
+# Copy the built artifact from the build stage
+# Adjust the path based on your project structure
+COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
+
+# Expose the port the app runs on
 EXPOSE 8080
 
-# Copiar el archivo JAR construido desde la etapa anterior
-COPY --from=build /app/build/libs/demo-0.0.1-SNAPSHOT.jar /app/demo-0.0.1-SNAPSHOT.jar
-
-# Establecer el punto de entrada para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "/app/demo-0.0.1-SNAPSHOT.jar"]
+# Run the jar file
+ENTRYPOINT ["java", "-jar", "app.jar"]
