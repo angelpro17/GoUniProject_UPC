@@ -1,0 +1,4 @@
+.gitignore
+docker-compose-prod.yml
+.mvn/
+mvnw.cmd
