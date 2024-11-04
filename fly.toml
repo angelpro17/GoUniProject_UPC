@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for gouniproject-upc-divine-wave-3747 on 2024-11-03T22:37:01-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'gouniproject-upc-divine-wave-3747'
+primary_region = 'bog'
+
+[build]
+
+[[mounts]]
+  source = 'tmp'
+  destination = '/tmp'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
