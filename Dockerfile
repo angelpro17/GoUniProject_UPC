@@ -1,5 +1,5 @@
 # Use a base image with both Maven and Gradle
-FROM adoptopenjdk:11-jdk-hotspot as build
+FROM adoptopenjdk:22-jdk-hotspot as build
 
 # Install Maven and Gradle
 RUN apt-get update && \
@@ -26,7 +26,7 @@ RUN if [ -f "pom.xml" ]; then \
     fi
 
 # Use a slim JRE image for the final stage
-FROM adoptopenjdk:11-jre-hotspot
+FROM adoptopenjdk:22-jre-hotspot
 
 WORKDIR /app
 
