@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/api/v1/chat")
 @Tag(name = "Chat", description = "Controller for managing chat messages")
 @CrossOrigin(origins = "http://localhost:4200") // Permitir solicitudes desde Angular
 public class ChatRestController {
