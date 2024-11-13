@@ -63,6 +63,9 @@ public class WebSecurityConfiguration {
                         .requestMatchers(
                                 "/api/v1/authentication/**",
                                 "/api/v1/payments/**",
+                                "/api/v1/chat/**",
+                                "/api/v1/chat/send/**",
+                                "/api/v1/chat/messages/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
