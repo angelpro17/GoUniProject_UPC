@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/chat")
 @Tag(name = "Chat", description = "Controller for managing chat messages")
-@CrossOrigin(origins = "http://localhost:4200") // Permitir solicitudes desde Angular
+@CrossOrigin(origins = "https://frontend-five-wheat-92.vercel.app") // Permitir solicitudes desde Angular
 public class ChatRestController {
 
     private final ChatService chatService;
